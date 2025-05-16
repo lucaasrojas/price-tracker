@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { formatDate } from "../utils";
+import { ButtonLink } from "./common/Buttons";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -17,38 +18,38 @@ export default function ProductDetails() {
   if (!product) return <p className="text-red-500">Producto no encontrado.</p>;
 
   return (
-    <div className="p-4">
-      <Link to="/" className="text-blue-500">
-        <button className="bg-blue-500 text-white p-2 mb-4 cursor-pointer">
-
-        Volver
-        </button>
+    <div className="p-4 gap-4 flex flex-col">
+      <ButtonLink to="/" label={"Volver"} type="neutral" />
+      <Link to={product.url} target="_blank">
+        <h2 className="text-xl text-blue-500">{product.title}</h2>
       </Link>
-
-      <Link to={product.url} target="_blank"><h2 className="text-xl text-blue-500">{product.title}</h2></Link>
-      <table className="w-full border mt-2">
+      <table className="w-full shadow-lg rounded-xl overflow-hidden">
         <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2">Fecha</th>
-            <th className="border p-2">Precio</th>
-            <th className="border p-2">Variación</th>
+          <tr className="bg-black text-white rounded-2xl">
+            <th className=" p-2">Fecha</th>
+            <th className=" p-2">Precio</th>
+            <th className=" p-2">Variación</th>
           </tr>
         </thead>
         <tbody>
           {product?.history?.map(({ price, timestamp }, index) => (
             <tr key={index}>
-              <td className="border p-2">{formatDate(timestamp)}</td>
-              <td className="border p-2">${price}</td>
-              <td
-                className={`border p-2`}
-              >
-                {index > 0 ? (price - product.history[index-1].price).toFixed(2)+"%" : "-" }
-                </td>
+              <td className=" p-2">{formatDate(timestamp)}</td>
+              <td className=" p-2">${price}</td>
+              <td className={` p-2`}>
+                {index > 0
+                  ? (price - product.history[index - 1].price).toFixed(2) + "%"
+                  : "-"}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <ResponsiveContainer width={"80%"} height={300} className={"justify-center mx-auto mt-4"}>
+      <ResponsiveContainer
+        width={"80%"}
+        height={300}
+        className={"justify-center mx-auto mt-4"}
+      >
         <LineChart
           data={product.history.map(({ price, timestamp }, i) => ({
             name: formatDate(timestamp),

@@ -1,31 +1,24 @@
 import { Link } from "react-router-dom";
 
 const COLORS_BY_TYPE = {
-  success: "bg-green-500",
-  error: "bg-red-500",
-  ghost: "bg-transparent",
-  neutral: "bg-blue-500",
+  success: "bg-green-500 text-white",
+  error: "bg-red-500 text-white",
+  ghost: "bg-transparent text-gray-500",
+  neutral: "bg-blue-500 text-white",
 };
 
 const COLORS_HOVER_BY_TYPE = {
   success: "hover:bg-green-700",
   error: "hover:bg-red-700",
-  ghost: "hover:bg-gray-200",
+  ghost: "hover:bg-gray-400 hover:text-white",
   neutral: "hover:bg-blue-700",
-};
-
-const TEXT_COLORS_BY_TYPE = {
-  success: "text-white",
-  error: "text-white",
-  ghost: "text-gray-500",
-  neutral: "text-white",
 };
 
 export const Button = ({ label, onClick = () => {}, type = "ghost" }) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 ${COLORS_BY_TYPE[type]} ${TEXT_COLORS_BY_TYPE[type]} rounded cursor-pointer ${COLORS_HOVER_BY_TYPE[type]} transition duration-200 ease-in-out`}
+      className={`px-4 py-2 ${COLORS_BY_TYPE[type]} rounded cursor-pointer ${COLORS_HOVER_BY_TYPE[type]} transition duration-200 ease-in-out`}
     >
       {label}
     </button>

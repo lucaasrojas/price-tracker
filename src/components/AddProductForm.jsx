@@ -54,8 +54,8 @@ export default function AddProductForm({setProducts}) {
   }
 
   return (
-    <div className="p-4 gap-4 flex">
-      <input className="border p-2" type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="URL del producto"/>
+    <div className="pb-4 gap-4 flex">
+      <input className="border rounded-lg p-2 w-full" type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="URL del producto"/>
       <Button 
         label="Agregar"
         onClick={() => handleAddProduct(url)}
