@@ -5,15 +5,18 @@ import { usePriceTracker } from "./hooks/usePriceTracker";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductDetails from "./components/ProductDetails";
-import { findProductById, getProductsFromLocalStorage, setProductsToLocalStorage } from "./utils";
+import {
+  findProductById,
+  getProductsFromLocalStorage,
+  getTimeDifference,
+  setProductsToLocalStorage,
+} from "./utils";
 import { toast, ToastContainer } from "react-toastify";
 export default function App() {
-  const [products, setProducts] = useState(
-    getProductsFromLocalStorage() || []
-  );
+  const [products, setProducts] = useState(getProductsFromLocalStorage() || []);
 
   // Move products state to hook
-  
+
   usePriceTracker(products, setProducts);
 
   const handleAddProducts = (newProduct) => {
@@ -43,23 +46,28 @@ export default function App() {
   // check on load last update for each product that is older than 4 hours and update it
   const checkLastUpdate = () => {
     const productsList = getProductsFromLocalStorage() || [];
-    const updatedProducts = productsList.map((product) => {
-      const lastUpdate = new Date(
+    if (productsList.length === 0) return;
+
+    const updatedProductsPromises = productsList.map(async (product) => {
+      const diff = getTimeDifference(
         product.history[product.history.length - 1].timestamp
       );
-      const now = new Date();
-      const diff = now - lastUpdate;
-      if (diff > 4 * 60 * 60 * 1000) {
-        return handleAdd(product.url);
-      }
-      return product;
+      const response = await handleAdd(product.url)
+      return (diff > 2 * 60 * 60 * 1000) ? response : product;
     });
-    setProducts(updatedProducts);
-    setProductsToLocalStorage(updatedProducts);
+
+    Promise.all(updatedProductsPromises)
+      .then((data) => {
+        const filteredData = data.filter((product) => product !== undefined);
+        if (filteredData.length === 0) return;
+        setProducts(filteredData);
+        setProductsToLocalStorage(filteredData);
+      })
+      .catch((error) => console.log("Error updating products", error));
   };
 
   useEffect(() => {
-    checkLastUpdate()
+    checkLastUpdate();
   }, []);
 
   return (
@@ -71,7 +79,9 @@ export default function App() {
             path="/"
             element={
               <>
-              <h1 className="text-5xl font-bold mb-4 text-center">Price Tracker</h1>
+                <h1 className="text-5xl font-bold mb-4 text-center">
+                  Price Tracker
+                </h1>
                 <AddProductForm setProducts={handleAddProducts} />
                 <ProductTable
                   products={products}

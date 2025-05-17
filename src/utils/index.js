@@ -40,3 +40,12 @@ export const setProductsToLocalStorage = (products) => {
 export const getProductIdFromUrl = (url)=>{
   return new URL(url).pathname.match(/MLA-\d+/)?.[0] || url.match(/MLA\d+/)?.[0];
 }
+
+export const getTimeDifference = (timestamp) => {
+  return new Date().getTime() - new Date(timestamp).getTime();
+};
+
+export const getPriceVariation = (currentPrice, previousPrice) => {
+  if (previousPrice === 0) return 0;
+  return ((currentPrice - previousPrice) / previousPrice) * 100;
+};
