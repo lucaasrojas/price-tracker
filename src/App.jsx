@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddProductForm from "./components/AddProductForm";
+import AddProductForm, { handleAdd } from "./components/AddProductForm";
 import ProductTable from "./components/ProductTable";
 import { usePriceTracker } from "./hooks/usePriceTracker";
 import "./index.css";
