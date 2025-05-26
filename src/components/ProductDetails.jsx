@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { formatDate } from "../utils";
+import { formatDate, getPriceVariation } from "../utils";
 import { ButtonLink } from "./common/Buttons";
 
 export default function ProductDetails() {
@@ -38,7 +38,7 @@ export default function ProductDetails() {
               <td className=" p-2">${price}</td>
               <td className={` p-2`}>
                 {index > 0
-                  ? (price - product.history[index - 1].price).toFixed(2) + "%"
+                  ? getPriceVariation(price, product.history[index - 1].price).toFixed(2) + "%"
                   : "-"}
               </td>
             </tr>
