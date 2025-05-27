@@ -15,8 +15,9 @@ export async function fetchPrice(url) {
 
     const price = parsed.querySelector('[itemprop="price"]').content
     const title = parsed.querySelector('h1.ui-pdp-title').innerText
+    const image = parsed.querySelector('.ui-pdp-image.ui-pdp-gallery__figure__image').src;
   
-    return { title, price, id, url:fetchUrl };
+    return { title, price, id, url:fetchUrl, image };
   } catch (error) {
     console.log("ERR", error)
     return null;

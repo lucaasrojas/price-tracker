@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { handleAdd } from "../components/AddProductForm";
 import { setProductsToLocalStorage } from "../utils";
+import addProduct from "../actions/product/addProduct";
 
 export function usePriceTracker(products, setProducts) {
   useEffect(() => {
@@ -8,13 +8,10 @@ export function usePriceTracker(products, setProducts) {
     const interval = setInterval(() => {
       const updatedProducts = products.map(async (product) => {
         if(!product) return;
-        const newProduct= await handleAdd(product.url)
-        console.log("NEW PRODUCT", newProduct)
+        const newProduct= await addProduct(product.url)
         return newProduct;
       });
-      console.log("update", updatedProducts)
       Promise.all(updatedProducts).then((data) =>{
-        console.log("PROMISE DATA", data)
         if(data){
 
           setProducts(data)
@@ -25,4 +22,6 @@ export function usePriceTracker(products, setProducts) {
 
     return () => clearInterval(interval);
   }, [products, setProducts]);
+
+  
 }

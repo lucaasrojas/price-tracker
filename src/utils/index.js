@@ -49,3 +49,38 @@ export const getPriceVariation = (currentPrice, previousPrice) => {
   if (previousPrice === 0) return 0;
   return ((currentPrice - previousPrice) / previousPrice) * 100;
 };
+
+export const findLastVariation = (history) => {
+  for (let i = history.length - 1; i > 0; i--) {
+    if (history[i].variation > 0 || history[i].variation < 0) {
+      return history[i].variation;
+    }
+    if(history[i].price !== history[i - 1].price) {
+      return getPriceVariation(history[i].price, history[i - 1].price);
+    }
+  }
+
+  return 0
+}
+
+// Remove los valores del historial que son del mismo dia y precio y actualizar el localStorage
+export const cleanHistory = (history) => {
+  //CHECK THIS
+  const cleanedHistory = [];
+  let lastEntry = null;
+
+  history.forEach((entry) => {
+    if (
+      lastEntry &&
+      new Date(entry.timestamp).toDateString() ===
+        new Date(lastEntry.timestamp).toDateString() &&
+      entry.price === lastEntry.price
+    ) {
+      return; // Skip this entry
+    }
+    cleanedHistory.push(entry);
+    lastEntry = entry;
+  });
+
+  return cleanedHistory;
+};

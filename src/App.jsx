@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddProductForm, { handleAdd } from "./components/AddProductForm";
+import AddProductForm from "./components/AddProductForm";
 import ProductTable from "./components/ProductTable";
 import { usePriceTracker } from "./hooks/usePriceTracker";
 import "./index.css";
@@ -12,6 +12,7 @@ import {
   setProductsToLocalStorage,
 } from "./utils";
 import { toast, ToastContainer } from "react-toastify";
+import addProduct from "./actions/product/addProduct";
 export default function App() {
   const [products, setProducts] = useState(getProductsFromLocalStorage() || []);
 
@@ -52,13 +53,15 @@ export default function App() {
       const diff = getTimeDifference(
         product.history[product.history.length - 1].timestamp
       );
-      const response = await handleAdd(product.url)
+      const response = await addProduct(product.url)
+      
       return (diff > 2 * 60 * 60 * 1000) ? response : product;
     });
 
     Promise.all(updatedProductsPromises)
       .then((data) => {
         const filteredData = data.filter((product) => product !== undefined);
+        console.log("Filtered Data", filteredData);	
         if (filteredData.length === 0) return;
         setProducts(filteredData);
         setProductsToLocalStorage(filteredData);

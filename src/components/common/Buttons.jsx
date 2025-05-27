@@ -14,21 +14,22 @@ const COLORS_HOVER_BY_TYPE = {
   neutral: "hover:bg-blue-700",
 };
 
-export const Button = ({ label, onClick = () => {}, type = "ghost" }) => {
+export const Button = ({ label, onClick = () => {}, type = "ghost", children }) => {
   return (
     <button
       onClick={onClick}
       className={`px-4 py-2 ${COLORS_BY_TYPE[type]} rounded cursor-pointer ${COLORS_HOVER_BY_TYPE[type]} transition duration-200 ease-in-out`}
     >
       {label}
+      {children}
     </button>
   );
 };
 
-export const ButtonLink = ({ label, to }) => {
+export const ButtonLink = ({ label, to,children }) => {
   return (
     <Link to={to}>
-      <Button label={label} />
+      <Button label={label} children={children} />
     </Link>
   );
 };
