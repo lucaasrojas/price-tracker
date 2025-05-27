@@ -61,7 +61,6 @@ export default function App() {
     Promise.all(updatedProductsPromises)
       .then((data) => {
         const filteredData = data.filter((product) => product !== undefined);
-        console.log("Filtered Data", filteredData);	
         if (filteredData.length === 0) return;
         setProducts(filteredData);
         setProductsToLocalStorage(filteredData);

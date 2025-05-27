@@ -23,7 +23,6 @@ export const parsePrice = (price)=>{
 export const findProductById = (id) => {
   const products = JSON.parse(localStorage.getItem("products")) || []
   if(products.length === 0) return null
-  console.log("PRODUCTS", products)
   return products?.filter(
     (product) => product?.id === id
   )[0];
